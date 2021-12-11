@@ -7,12 +7,12 @@ if __name__ == "__main__":
     autocomplete_points = {")": 1, "]": 2, "}": 3, ">": 4}
     pairs = [("(", ")"), ("{", "}"), ("[", "]"), ("<", ">")]
     left = [x[0] for x in pairs]
-    right = [x[1] for x in pairs]
-    left_to_right = {x[0]:x[1] for x in pairs}
+    left_to_right = {x[0]: x[1] for x in pairs}
     right_to_left = {x[1]: x[0] for x in pairs}
 
     illegal = []
     unclosed = []
+    results = []
 
     for line in inp:
         stack = []
@@ -25,19 +25,13 @@ if __name__ == "__main__":
                 if open_cmd != right_to_left[cmd]:
                     illegal.append(cmd)
                     break
-            if cmd_idx >= len(line) -1:
-                unclosed.append(reversed(stack))
+        else:
+            # unclosed.append(reversed(stack))
+            sub_total = 0
+            for y in reversed(stack):
+                sub_total *= 5
+                sub_total += autocomplete_points[left_to_right[y]]
+            results.append(sub_total)
 
     print(sum([illegal_points[x] for x in illegal]))
-
-    results = []
-    for x in unclosed:
-        sub_total = 0
-        for y in x:
-            sub_total *= 5
-            sub_total += autocomplete_points[left_to_right[y]]
-        results.append(sub_total)
-    print(sorted(results)[len(results)//2])
-
-
-
+    print(sorted(results)[len(results) // 2])
